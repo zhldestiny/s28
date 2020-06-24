@@ -1,0 +1,40 @@
+{% extends "web/layout/basic.html" %}
+{% load static %}
+
+{% block title %}
+用户注册
+{% endblock %}
+    <link rel="stylesheet" href="{% static "css/account.css" %}">
+{% block css %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <h3>用户注册</h3>
+    </div>
+    <div class="account">
+    <h1 style="text-align: center">注册</h1>
+    <form>
+        {% for filed in form %}
+            {% if filed.name == "code" %}
+                <div class="form-group">
+                    <label for={{ filed.id_for_label }}>{{ filed.label }}</label>
+                    <!-- <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email"> -->
+                    <div class="clearfix">
+                    <div class="col-md-6" style="padding-left: 0">{{ filed }}</div>
+                    <div class="col-md-6" id="code"><input type="button" class="btn btn-default" value="点击获取验证码"></div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <label for={{ filed.id_for_label }}>{{ filed.label }}</label>
+                    {{ filed }}
+                </div>
+            {% endif %}
+        {% endfor %}
+      <button type="submit" class="btn btn-primary">注册</button>
+    </form>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

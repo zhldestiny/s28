@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app01.apps.App01Config',
+    'web.apps.WebConfig',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,7 @@ TENCENT_SMS_TEMPLATE = {
     'register': 548760,
     'login': 548762
 }
+
 
 try:
     from .local_settings import *

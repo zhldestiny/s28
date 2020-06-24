@@ -1,34 +1,26 @@
-from django.shortcuts import render, HttpResponse
-from django_redis import get_redis_connection
-import random
-from utils.tencent.sms import send_sms_single
-from django.conf import settings
-
-# Create your views here.
-def send_sms(request):
-	"""send sms
-		?tpl=login -> 642365
-		?tpl=register -> 642323
-	"""
-	tpl = request.GET.get('tpl')
-	template_id = settings.TENCENT_SMS_TEMPLATE.get(tpl)
-	if not template_id:
-		return HttpResponse("no template available")
-	code = random.randrange(1000, 9999)
-	# res = send_sms_single("15827384645", template_id, [code, ])
-	res = send_sms_single(phone, template_id, [code, ])
-	# print(res)
-	if res["result"] == 0:
-		# redis 设置
-		conn = get_redis_connection("default")
-		conn.set(phone, code, ex=60)
-		return HttpResponse("短信发送成功")
-	else:
-		return HttpResponse(res["errmsg"])
-
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+__title__ = ''
+__author__ = 'zhonghaolin'
+__mtime__ = '2020/6/24'
+# code is far away from bugs with the god animal protecting
+    I love animals. They taste delicious.
+              ┏┓      ┏┓
+            ┏┛┻━━━┛┻┓
+            ┃      ☃      ┃
+            ┃  ┳┛  ┗┳  ┃
+            ┃      ┻      ┃
+            ┗━┓      ┏━┛
+                ┃      ┗━━━┓
+                ┃  神兽保佑    ┣┓
+                ┃　永无BUG！   ┏┛
+                ┗┓┓┏━┳┓┏┛
+                  ┃┫┫  ┃┫┫
+                  ┗┻┛  ┗┻┛
+"""
 from django import forms
-from app01 import models
+from web import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 
@@ -48,8 +40,3 @@ class RegisterModelFrom(forms.ModelForm):
 		for name, field in self.fields.items():
 			field.widget.attrs["class"] = "form-control"
 			field.widget.attrs["placeholder"] = "plz input " + name    # '请输入%s' % (field.label,)
-
-
-def register(request):
-	form = RegisterModelFrom()
-	return render(request, "app01/register.html", {"form": form})

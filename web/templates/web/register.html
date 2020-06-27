@@ -56,4 +56,32 @@
 {% endblock %}
 
 {% block js %}
+    <script>
+        // 页面框加载完成后自动执行函数
+        $(function(){
+            bindClickBtnSms();
+        });
+
+        /*
+        点击获取验证码的按钮绑定事件
+         */
+        function bindClickBtnSms() {
+            $('#btnSms').click(function () {
+                //获取手机号
+                var mobilePhone = $('#id_phone').val();
+
+                //发送ajax请求
+                $.ajax({
+                    url: "{% url 'send_sms' %}",    //反向生成或者直接"/send/sms/"
+                    type: "GET",
+                    data: {phone: mobilePhone, tpl: "register"},
+                    success:function (res) {
+                        console.log(res)
+                    }
+                })
+
+            })
+
+        }
+    </script>
 {% endblock %}
